@@ -1,0 +1,50 @@
+/*
+*Hello 
+*welcome 
+*Move the files to the directory you want.
+*/
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+#include <string.h>
+
+int main(int argc, char *argv[]){
+       // printf("ARGC : %d\n", argc);
+
+        if ( argc < 5 ) {
+                printf(" Hello welcome to somin's  world! \n Move the files to the directory you want. \n Usage : %s <filename1> <filename2> ... <directory name>\n", argv[0]);
+                return 0;
+        }
+
+        FILE *fd0;
+        FILE *fd1;
+        int len;
+        char buf[257], destination[]="./";
+
+        for(int turn=1; turn<argc-1; turn++){
+
+                strcat(destination, argv[argc-1]);
+                strcat(destination, "/");
+                strcat(destination, argv[turn]);
+
+                fd0 = fopen(argv[turn], "r");
+                fd1 = fopen(destination, "w");
+
+                while ( len=fread(buf, 1, 256, fd0) ){
+                        buf[len] = '\0';
+                        fwrite(buf, 1, len, fd1);
+                        printf("Length : %d\n", len);
+                        printf("%s\n", buf);
+                }
+                strcpy(destination, "./");
+                destination[0]='\0';
+
+                fclose(fd0);
+                fclose(fd1);
+        }
+
+        return 0;
+}
+
